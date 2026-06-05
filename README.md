@@ -1,8 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="<img width="1470" height="923" alt="image" src="https://github.com/user-attachments/assets/ca247884-6d16-4c97-bb65-9ac8c4945614" />
-" />
-</div>
-
 # Run and deploy your AI Studio app
 
 This contains everything you need to run your app locally.
