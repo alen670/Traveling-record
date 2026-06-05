@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Noto Sans SC", "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fredoka", "Noto Sans SC", sans-serif;
+}
+
+/* Leaflet Popup & Tooltip Styles Overwrite */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  padding: 4px !important;
+}
+
+.leaflet-popup-tip-container {
+  display: block !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px !important;
+  font-family: inherit !important;
+}
+
+.leaflet-tooltip {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important;
+  color: #1e293b !important;
+  font-family: inherit !important;
+  font-size: 11px !important;
+}
+
+/* Custom transitions and animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale {
+  animation: scale 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-bounceSlow {
+  animation: bounceSlow 2s ease-in-out infinite;
+}
+
+/* Scrollbar and custom utilities */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Ensure custom Leaflet div-icon container does not have default borders or backgrounds */
+.custom-map-marker-div {
+  background: transparent !important;
+  border: none !important;
+}
+
+.temp-marker-div {
+  background: transparent !important;
+  border: none !important;
+}
