@@ -10,7 +10,6 @@ import MapContainer from './components/MapContainer';
 import MemoryForm from './components/MemoryForm';
 import TimelineView from './components/TimelineView';
 import GalleryView from './components/GalleryView';
-import StatisticsView from './components/StatisticsView';
 import MyProfileView from './components/MyProfileView';
 import BottomSheet from './components/BottomSheet';
 import { Map, Calendar, Image as ImageIcon, Sparkles, User, Plus, Compass } from 'lucide-react';
@@ -19,10 +18,10 @@ import { AnimatePresence, motion } from 'motion/react';
 const MARKERS_DB_KEY = 'FOOTPRINT_MARKERS_DB_V2';
 
 export default function App() {
-  // Theme state: default true meaning system is in deep dark mode, user choice persists
+  // Theme state: default false meaning system is in elegant light mode, user choice persists
   const [darkMode, setDarkMode] = useState(() => {
     const cached = localStorage.getItem('FOOTPRINT_DARK_MODE');
-    return cached ? cached === 'true' : true; // default dark theme as cosmic preference
+    return cached ? cached === 'true' : false; // default light theme as organic white paper preference
   });
 
   // Core states
@@ -40,12 +39,19 @@ export default function App() {
   const [pointToEdit, setPointToEdit] = useState<MemoryPoint | null>(null);
   const [initialCoords, setInitialCoords] = useState<{ lat: number; lng: number; locationName: string } | null>(null);
 
-  // Apply dark mode theme class to document documentElement
+  // Apply dark mode theme class to document elements thoroughly
   useEffect(() => {
+    const rootEl = document.documentElement;
+    const bodyEl = document.body;
+    const reactRoot = document.getElementById('root');
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      rootEl.classList.add('dark');
+      bodyEl.classList.add('dark');
+      reactRoot?.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      rootEl.classList.remove('dark');
+      bodyEl.classList.remove('dark');
+      reactRoot?.classList.remove('dark');
     }
     localStorage.setItem('FOOTPRINT_DARK_MODE', String(darkMode));
   }, [darkMode]);
@@ -157,9 +163,9 @@ export default function App() {
 
   if (!dbLoaded) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-slate-100 dark:bg-black text-slate-500 font-sans select-none">
-        <Compass className="w-9 h-9 animate-spin text-[#007AFF] mb-3" />
-        <span className="text-xs font-bold tracking-wider text-slate-700 dark:text-zinc-400">正在开启您的私密数字足迹箱...</span>
+      <div className="flex flex-col items-center justify-center h-screen bg-bg-page text-text-secondary font-sans select-none">
+        <Compass className="w-9 h-9 animate-spin text-brand-primary mb-3" />
+        <span className="text-xs font-bold tracking-wider text-text-primary/80">正在开启您的私密数字足迹箱...</span>
       </div>
     );
   }
@@ -172,7 +178,7 @@ export default function App() {
     setInitialCoords({
       lat: 30.2741,
       lng: 120.1551,
-      locationName: '西湖风景游区',
+      locationName: '西湖风景区',
     });
     setPointToEdit(null);
     setIsEditorOpen(true);
@@ -182,7 +188,7 @@ export default function App() {
     <div 
       id="app-canvas-container" 
       className={`h-screen w-screen flex flex-col font-sans overflow-hidden select-none transition-colors duration-300 ${
-        darkMode ? 'dark bg-black text-white' : 'bg-[#F2F2F7] text-black'
+        darkMode ? 'dark bg-bg-page text-text-primary' : 'bg-bg-page text-text-primary'
       }`}
     >
       
@@ -244,18 +250,6 @@ export default function App() {
             </motion.div>
           )}
 
-          {activeTab === 'statistics' && (
-            <motion.div
-              key="statistics-tab"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="w-full h-full flex flex-col"
-            >
-              <StatisticsView points={points} />
-            </motion.div>
-          )}
-
           {activeTab === 'profile' && (
             <motion.div
               key="profile-tab"
@@ -277,31 +271,30 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {/* 2. Global Floating Action Button (FAB) Visible on Timeline, Album, Stats to simplify entry */}
+      {/* 2. Global Floating Action Button (FAB) (Earthy gradient, travel journal look) */}
       {activeTab !== 'map' && activeTab !== 'profile' && (
         <div className="fixed bottom-20 right-4 z-[999]">
           <motion.button
             whileTap={{ scale: 0.92 }}
             whileHover={{ scale: 1.05 }}
             onClick={handleGlobalAddTrigger}
-            className="flex items-center gap-1.5 px-4.5 py-3 rounded-full bg-[#007AFF] hover:bg-[#007AFF]/95 text-white font-black text-xs shadow-xl min-w-max cursor-pointer focus:outline-none border-none outline-none"
+            className="flex items-center gap-1.5 px-5 py-3 rounded-full floating-action-button font-bold text-xs min-w-max cursor-pointer focus:outline-none border-none outline-none font-ui"
           >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
+            <Plus className="w-4 h-4 stroke-[2.2]" />
             <span>记录此刻</span>
           </motion.button>
         </div>
       )}
 
-      {/* 3. Immersive Mobile Bottom iOS Cupertino Tab Navigator Bar */}
+      {/* 3. Immersive Mobile Bottom Travel Tab Navigator Bar */}
       <nav 
         id="app-bottom-nav" 
-        className="fixed bottom-0 inset-x-0 h-16 border-t border-slate-200/50 dark:border-zinc-800/60 bg-white/94 dark:bg-[#1C1C1E]/95 backdrop-blur-2xl z-[1001] flex items-center justify-around px-2 pb-safe-bottom"
+        className="fixed bottom-0 inset-x-0 h-16 border-t border-brand-secondary/10 bg-bg-card backdrop-blur-2xl z-[1001] flex items-center justify-around px-2 pb-safe-bottom"
       >
         {[
           { id: 'map', label: '地图', icon: Map },
           { id: 'timeline', label: '时间轴', icon: Calendar },
           { id: 'gallery', label: '相册', icon: ImageIcon },
-          { id: 'statistics', label: '回顾', icon: Sparkles },
           { id: 'profile', label: '我的', icon: User },
         ].map((item) => {
           const isActive = activeTab === item.id;
@@ -313,20 +306,20 @@ export default function App() {
                 setActiveTab(item.id as any);
                 setSelectedPointId(null); // Clear selected point on tab change to slide down sheet
               }}
-              className="flex flex-col items-center justify-center gap-1.5 py-1 px-3 w-16 transition-all duration-200 relative cursor-pointer border-none bg-transparent outline-none"
+              className="flex flex-col items-center justify-center gap-1 py-1 px-3 w-16 transition-all duration-200 relative cursor-pointer border-none bg-transparent outline-none"
             >
               <Icon 
                 className={`w-4.5 h-4.5 transition-colors duration-200 shrink-0 ${
                   isActive 
-                    ? 'text-[#007AFF] dark:text-[#0A84FF] scale-105 stroke-[2.5]' 
-                    : 'text-[#8E8E93]'
+                    ? 'text-brand-primary scale-105 stroke-[2.5]' 
+                    : 'text-text-muted/80'
                 }`} 
               />
               <span 
                 className={`text-[9px] font-bold tracking-tight transition-all duration-200 leading-tight ${
                   isActive 
-                    ? 'text-[#007AFF] dark:text-[#0A84FF] font-black' 
-                    : 'text-[#8E8E93] font-normal'
+                    ? 'text-text-primary font-extrabold' 
+                    : 'text-text-muted/70 font-normal'
                 }`}
               >
                 {item.label}
@@ -335,7 +328,7 @@ export default function App() {
               {isActive && (
                 <motion.div
                   layoutId="bottom-nav-indicator"
-                  className="absolute top-0 w-8 h-1 bg-[#007AFF] dark:bg-[#0A84FF] rounded-full"
+                  className="absolute top-0 w-8 h-1 bg-brand-primary rounded-full"
                 />
               )}
             </button>

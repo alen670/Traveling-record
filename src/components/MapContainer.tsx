@@ -137,6 +137,7 @@ export default function MapContainer({
     points.forEach(point => {
       const isSelected = selectedPointId === point.id;
       const categoryConfig = TRAVEL_CATEGORIES.find(c => c.value === point.category) || TRAVEL_CATEGORIES[TRAVEL_CATEGORIES.length - 1];
+      const brandColor = darkMode ? '#4F7D82' : '#2F5D62';
 
       // Build customized beautiful marker html
       const imageUri = point.images && point.images.length > 0 ? point.images[0] : null;
@@ -147,7 +148,7 @@ export default function MapContainer({
         markerHtml = `
           <div class="relative flex items-center justify-center animate-fadeIn">
             <div class="w-11 h-11 rounded-full border-[2.5px] bg-white flex items-center justify-center overflow-hidden shadow-md transition-transform ${
-              isSelected ? 'border-[#007AFF] scale-115 ring-4 ring-[#007AFF]/25' : 'border-white hover:scale-105'
+              isSelected ? 'border-brand-primary scale-115 ring-4 ring-brand-primary/25' : 'border-white hover:scale-105'
             }">
               <img src="${imageUri}" referrerpolicy="no-referrer" class="w-full h-full object-cover" />
             </div>
@@ -157,7 +158,7 @@ export default function MapContainer({
             </div>
             <!-- Triangle pin arrow -->
             <div class="absolute -bottom-[3px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rotate-45 border-r border-b bg-white ${
-              isSelected ? 'border-[#007AFF]' : 'border-white'
+              isSelected ? 'border-brand-primary' : 'border-white'
             }"></div>
           </div>
         `;
@@ -165,12 +166,12 @@ export default function MapContainer({
         markerHtml = `
           <div class="relative flex items-center justify-center animate-fadeIn">
             <div class="w-9 h-9 rounded-full text-white shadow-md flex items-center justify-center border-2 border-white transition-transform ${
-              isSelected ? 'scale-115 ring-4 ring-[#007AFF]/25' : 'hover:scale-105'
-            }" style="background: ${categoryConfig.markerColor}; border-color: ${isSelected ? '#007AFF' : '#ffffff'};">
+              isSelected ? 'scale-115 ring-4 ring-brand-primary/25' : 'hover:scale-105'
+            }" style="background: ${categoryConfig.markerColor}; border-color: ${isSelected ? brandColor : '#ffffff'};">
               <span class="text-sm font-sans" style="transform: translateY(-0.5px);">${emojiBadge}</span>
             </div>
             <!-- Triangle pin arrow -->
-            <div class="absolute -bottom-[3px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rotate-45 border-r border-b" style="background: ${categoryConfig.markerColor}; border-color: ${isSelected ? '#007AFF' : '#ffffff'};"></div>
+            <div class="absolute -bottom-[3px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rotate-45 border-r border-b" style="background: ${categoryConfig.markerColor}; border-color: ${isSelected ? brandColor : '#ffffff'};"></div>
           </div>
         `;
       }
@@ -222,8 +223,10 @@ export default function MapContainer({
 
     const latlngs = sortedPoints.map(p => new L.LatLng(p.lat, p.lng));
 
+    const brandSecondaryColor = darkMode ? '#A0835B' : '#8B6F47';
+
     const polyline = L.polyline(latlngs, {
-      color: darkMode ? '#5856D6' : '#007AFF', // Clean iOS color
+      color: brandSecondaryColor, // Warm secondary travel color
       weight: 3,
       opacity: 0.65,
       dashArray: '6, 10',
@@ -249,10 +252,11 @@ export default function MapContainer({
     }
 
     if (clickActiveCoords) {
+      const activeBrandColor = darkMode ? '#4F7D82' : '#2F5D62';
       const tempIcon = L.divIcon({
         html: `
-          <div class="flex items-center justify-center animate-bounceSlow">
-            <div class="bg-[#007AFF] outline outline-4 outline-white text-white rounded-full p-2 hover:opacity-95 shadow-xl">
+          <div class="flex items-center justify-center animate-bounceSlow font-ui">
+            <div class="outline outline-4 outline-white text-white rounded-full p-2 hover:opacity-95 shadow-xl" style="background: ${activeBrandColor};">
               <span class="text-xs">📌</span>
             </div>
           </div>
@@ -270,15 +274,15 @@ export default function MapContainer({
             closeButton: false,
           }).setContent(() => {
             const container = document.createElement('div');
-            container.className = 'font-sans p-2 text-center bg-white/95 dark:bg-[#1C1C1E]/95 rounded-xl border border-slate-100/10';
+            container.className = 'font-ui p-2 text-center bg-bg-card backdrop-blur-md rounded-xl border border-brand-secondary/10';
             container.innerHTML = `
-              <p class="font-black text-xs text-[#007AFF] mb-1">在这里记事足迹？</p>
-              <p class="text-[10px] text-slate-500 mb-2 truncate">${clickLocationName}</p>
+              <p class="font-extrabold text-xs mb-1" style="color: ${activeBrandColor};">在这里记事足迹？</p>
+              <p class="text-[10px] text-text-secondary mb-2 truncate">${clickLocationName}</p>
               <div class="flex justify-center gap-1.5">
-                <button id="add-marker-popup-btn" class="inline-flex items-center text-[10px] text-white bg-[#007AFF] hover:bg-[#007AFF]/90 px-3.5 py-1.5 rounded-full font-bold shadow-sm cursor-pointer border-none outline-none">
+                <button id="add-marker-popup-btn" class="inline-flex items-center text-[10px] text-white px-3.5 py-1.5 rounded-full font-bold shadow-sm cursor-pointer border-none outline-none font-ui" style="background: linear-gradient(135deg, ${darkMode ? '#2F5D62' : '#223E4C'}, ${darkMode ? '#6F8D92' : '#4F7D82'});">
                   开始写日记
                 </button>
-                <button id="close-marker-popup-btn" class="inline-flex items-center text-[10px] text-slate-600 dark:text-zinc-400 bg-slate-100 dark:bg-zinc-800 px-2 rounded-full cursor-pointer border-none outline-none">
+                <button id="close-marker-popup-btn" class="inline-flex items-center text-[10px] text-text-secondary bg-bg-soft px-2.5 py-1.5 rounded-full cursor-pointer border-none outline-none font-ui font-bold">
                   取消
                 </button>
               </div>
@@ -404,23 +408,23 @@ export default function MapContainer({
   };
 
   return (
-    <div className="relative w-full h-full bg-[#F2F2F7] dark:bg-black flex flex-col overflow-hidden">
+    <div className="relative w-full h-full bg-bg-page flex flex-col overflow-hidden font-ui">
       
       {/* 1. Cupertino Top Translucent Search Bar Overlay */}
-      <div className="absolute top-4 inset-x-4 z-[1000] flex items-start justify-center pointer-events-none">
+      <div className="absolute top-4 inset-x-4 z-[1000] flex items-start justify-center pointer-events-none font-ui">
         
-        <div className="w-full max-w-md pointer-events-auto flex flex-col">
+        <div className="w-full max-w-md pointer-events-auto flex flex-col font-ui">
           <form 
             onSubmit={handleGeocodeSearch} 
-            className="flex items-center bg-white/80 dark:bg-zinc-900/80 backdrop-blur-2xl px-3.5 py-2.5 rounded-2xl border border-slate-200/50 dark:border-zinc-800/45 shadow-lg shadow-black/5 focus-within:ring-2 focus-within:ring-[#007AFF]/20 transition-all"
+            className="flex items-center bg-bg-card backdrop-blur-2xl px-3.5 py-2 rounded-2xl border border-brand-secondary/10 shadow-lg shadow-black/5 focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all font-ui"
           >
-            <Search className="w-4 h-4 text-[#8E8E93] mr-2 shrink-0" />
+            <Search className="w-4 h-4 text-[#8E8E93] mr-2 shrink-0 font-ui" />
             <input
               type="text"
               placeholder="搜索地点、标签或回忆"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 text-xs bg-transparent outline-none text-slate-950 dark:text-white placeholder-[#8E8E93] font-medium"
+              className="flex-1 text-xs bg-transparent outline-none text-text-primary placeholder-[#8E8E93] font-bold font-ui"
             />
             {searchQuery && (
               <button
@@ -429,14 +433,14 @@ export default function MapContainer({
                   setSearchQuery('');
                   setSearchResults([]);
                 }}
-                className="p-1 mr-1.5 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-full text-[#8E8E93]"
+                className="p-1 mr-1.5 hover:bg-bg-soft rounded-full text-text-secondary cursor-pointer border-none bg-transparent outline-none font-ui"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
             <button
               type="submit"
-              className="px-3.5 py-1.5 bg-[#007AFF] text-white rounded-full font-bold text-[10px] tracking-wide shadow-sm hover:opacity-95 cursor-pointer flex items-center justify-center shrink-0 border-none outline-none"
+              className="px-3.5 py-1.5 bg-brand-primary text-white rounded-full font-bold text-[10px] tracking-wide shadow-sm hover:opacity-95 cursor-pointer flex items-center justify-center shrink-0 border-none outline-none font-ui"
             >
               {searchLoading ? '寻觅中..' : '搜索'}
             </button>
@@ -444,7 +448,7 @@ export default function MapContainer({
 
           {/* Search Result Overlay Dropdown card */}
           {searchResults.length > 0 && (
-            <div className="mt-2.5 bg-white/94 dark:bg-[#1C1C1E]/94 backdrop-blur-2xl border border-slate-200/30 dark:border-zinc-800/40 rounded-2xl shadow-xl max-h-56 overflow-y-auto divide-y divide-slate-100/60 dark:divide-zinc-800 p-1">
+            <div className="mt-2.5 bg-bg-card/94 backdrop-blur-2xl border border-brand-secondary/15 rounded-2xl shadow-xl max-h-56 overflow-y-auto divide-y divide-slate-100/60 dark:divide-zinc-800 p-1">
               {searchResults.map((result, i) => (
                 <button
                   key={i}
@@ -452,10 +456,10 @@ export default function MapContainer({
                   onClick={() => handleSelectSearchResult(result)}
                   className="w-full text-left px-3 py-2.5 hover:bg-slate-100/50 dark:hover:bg-zinc-800/50 rounded-xl transition-colors flex items-start gap-2.5 cursor-pointer"
                 >
-                  <MapPin className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${result.isLocalPoint ? 'text-[#007AFF]' : 'text-rose-500'}`} />
+                  <MapPin className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${result.isLocalPoint ? 'text-brand-primary' : 'text-rose-500'}`} />
                   <div className="min-w-0 flex-1">
-                    <div className="text-xs font-black text-slate-900 dark:text-zinc-100 truncate">{result.name}</div>
-                    <div className="text-[10px] text-[#8E8E93] truncate mt-0.5">{result.display_name}</div>
+                    <div className="text-xs font-black text-text-primary truncate">{result.name}</div>
+                    <div className="text-[10px] text-text-secondary truncate mt-0.5">{result.display_name}</div>
                   </div>
                 </button>
               ))}
@@ -469,33 +473,33 @@ export default function MapContainer({
       <div className="absolute top-20 right-4 z-[1000] pointer-events-auto flex flex-col gap-2">
         <button
           onClick={() => setShowChronologicalTrail(p => !p)}
-          className={`w-9 h-9 flex items-center justify-center rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-800 shadow-md ${
-            showChronologicalTrail ? 'text-[#007AFF]' : 'text-[#8E8E93]'
+          className={`w-9 h-9 flex items-center justify-center rounded-full bg-bg-card backdrop-blur-xl border border-brand-secondary/15 shadow-md ${
+            showChronologicalTrail ? 'text-brand-primary' : 'text-[#8E8E93]'
           }`}
-          title={showChronologicalTrail ? '隐藏时间联执轨迹' : '显示时间联执轨迹'}
+          title={showChronologicalTrail ? '隐藏时间轨迹' : '显示时间轨迹'}
         >
           <EyeOff className="w-4 h-4" />
         </button>
       </div>
 
-      {/* 3. iOS Floating Controls in the bottom-right corner (Stacked compass locate & "+" write button) */}
+      {/* 3. Floating Controls in the bottom-right corner */}
       <div className="absolute bottom-24 right-4 z-[1000] pointer-events-auto flex flex-col gap-2.5">
         {/* GPS Locate Compass */}
         <button
           onClick={handleGPSLocate}
-          className="w-11 h-11 flex items-center justify-center rounded-full bg-white/92 dark:bg-zinc-900/92 backdrop-blur-xl border border-slate-200/50 dark:border-zinc-800 text-[#007AFF] shadow-lg hover:scale-105 active:scale-95 duration-100 transition-all cursor-pointer"
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-bg-card backdrop-blur-xl border border-brand-secondary/15 text-brand-primary shadow-lg hover:scale-105 active:scale-95 duration-100 transition-all cursor-pointer"
           title="定位回忆点"
         >
-          <Navigation className="w-5 h-5 fill-[#007AFF]" />
+          <Navigation className="w-5 h-5 fill-brand-primary" />
         </button>
 
         {/* Dynamic Add button */}
         <button
           onClick={onAddTrigger}
-          className="w-11 h-11 flex items-center justify-center rounded-full bg-[#007AFF] text-white shadow-lg hover:scale-105 active:scale-95 duration-100 transition-all cursor-pointer border-none outline-none"
+          className="w-11 h-11 flex items-center justify-center rounded-full floating-action-button duration-100 transition-all cursor-pointer border-none outline-none font-ui"
           title="在此刻创建足印记忆"
         >
-          <Plus className="w-5 h-5 stroke-[2.5]" />
+          <Plus className="w-5 h-5 stroke-[2.2]" />
         </button>
       </div>
 

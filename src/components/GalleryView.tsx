@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { MemoryPoint } from '../types';
-import { Camera, Calendar, MapPin, Heart, X, Compass, Navigation } from 'lucide-react';
+import { Camera, MapPin, X, Navigation, Image as ImageIcon } from 'lucide-react';
 
 interface GalleryViewProps {
   points: MemoryPoint[];
@@ -42,13 +42,13 @@ export default function GalleryView({
 
   if (items.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center h-full bg-[#F2F2F7] dark:bg-black text-[#8E8E93] select-none">
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-full p-4.5 mb-3 shadow-xs">
-          <Camera className="w-10 h-10 text-slate-300 dark:text-zinc-700 animate-pulse" />
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center h-full bg-bg-page text-text-secondary select-none">
+        <div className="bg-bg-card rounded-full p-4 mb-3 shadow-md border border-brand-secondary/10">
+          <Camera className="w-10 h-10 text-brand-secondary/60" />
         </div>
-        <p className="text-xs font-black">影集空空如也</p>
-        <p className="text-[10px] text-[#8E8E93] mt-1 max-w-xs leading-normal">
-          你还没有创作包含影像的足迹日记。点击地图空白处或右下角“+”按钮拍摄上传，留驻缤纷视界。
+        <p className="text-[15px] font-bold text-text-primary">目前还没有照片记录</p>
+        <p className="text-[13px] text-text-secondary mt-1 max-w-xs leading-relaxed">
+          点击地图并记录你来过的地方。在记事时，点击影像摄像头按钮上传本地瞬间。
         </p>
       </div>
     );
@@ -86,28 +86,28 @@ export default function GalleryView({
   const groupedPhotos = getGroupedItems();
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F2F2F7] dark:bg-black overflow-hidden font-sans text-black dark:text-white select-none">
+    <div className="flex-1 flex flex-col h-full bg-bg-page overflow-hidden font-ui text-text-primary select-none">
       
       {/* 1. iOS Album Title Navigation Bar & Segmented control */}
-      <div className="bg-white/80 dark:bg-[#1C1C1E]/85 backdrop-blur-2xl px-5 py-4 border-b border-slate-200/40 dark:border-zinc-800/60 shrink-0 space-y-3.5">
+      <div className="bg-bg-card backdrop-blur-2xl px-5 py-4 border-b border-brand-secondary/10 shrink-0 space-y-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">回忆相册</h1>
-          <span className="text-[10px] font-bold text-[#8E8E93] bg-slate-100 dark:bg-zinc-850 px-2.5 py-1 rounded-md shrink-0">
-            {items.length} 张瞬间
+          <h1 className="text-[28px] font-bold tracking-tight text-text-primary font-ui">相册</h1>
+          <span className="text-xs font-semibold text-text-secondary bg-bg-soft px-3 py-1 rounded-[8px] shrink-0 font-ui">
+            {items.length} 张回忆
           </span>
         </div>
 
         {/* Apple Segmented Control */}
         <div className="flex justify-center">
-          <div className="bg-slate-100 dark:bg-zinc-800 p-0.5 rounded-xl flex w-full max-w-xs justify-between gap-0.5 text-xs">
+          <div className="bg-bg-soft p-0.5 rounded-[12px] flex w-full max-w-xs justify-between gap-0.5 text-xs font-ui">
             {(['year', 'month', 'all'] as const).map((seg) => (
               <button
                 key={seg}
                 onClick={() => setSegment(seg)}
-                className={`flex-1 py-1.5 rounded-lg font-black transition-all text-center border-none cursor-pointer ${
+                className={`flex-1 py-1.5 rounded-[10px] font-bold transition-all text-center border-none cursor-pointer font-ui ${
                   segment === seg
-                    ? 'bg-white dark:bg-zinc-700 text-[#007AFF] shadow-sm'
-                    : 'text-[#8E8E93] hover:text-slate-700'
+                    ? 'bg-bg-card text-brand-primary shadow-xs'
+                    : 'text-text-muted hover:text-text-primary'
                 }`}
               >
                 {seg === 'year' ? '年' : seg === 'month' ? '月' : '全部'}
@@ -120,8 +120,8 @@ export default function GalleryView({
       {/* 2. Photo streaming Grid block */}
       <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-hide">
         {segment === 'all' ? (
-          /* Plain grid of photos */
-          <div className="grid grid-cols-3 gap-2">
+          /* Plain grid of photos with custom rounded look */
+          <div className="grid grid-cols-3 gap-1.5 animate-fadeIn">
             {items.map((item) => (
               <div
                 key={item.key}
@@ -132,7 +132,7 @@ export default function GalleryView({
                   date: item.point.date,
                   pointId: item.point.id
                 })}
-                className="relative aspect-square rounded-2xl overflow-hidden shadow-xs hover:scale-[1.03] active:scale-[0.98] transition-all cursor-pointer bg-slate-250 dark:bg-zinc-800 group"
+                className="relative aspect-square rounded-xl overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer bg-bg-soft border border-brand-secondary/8"
               >
                 <img
                   src={item.url}
@@ -147,17 +147,17 @@ export default function GalleryView({
           /* Segmented groups list */
           <div className="space-y-6">
             {groupedPhotos?.map(([label, groupItems]) => (
-              <div key={label} className="space-y-2">
-                <div className="px-1 flex items-center justify-between">
-                  <span className="text-xs font-black text-slate-800 dark:text-zinc-200">
+              <div key={label} className="space-y-2.5">
+                <div className="px-1 flex items-center justify-between text-[13px]">
+                  <span className="font-bold text-brand-secondary">
                     {label}
                   </span>
-                  <span className="text-[9px] text-[#8E8E93] font-bold">
+                  <span className="text-text-muted font-bold text-xs">
                     {groupItems.length} 张
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-1.5 animate-fadeIn">
                   {groupItems.map((item) => (
                     <div
                       key={item.key}
@@ -168,7 +168,7 @@ export default function GalleryView({
                         date: item.point.date,
                         pointId: item.point.id
                       })}
-                      className="relative aspect-square rounded-2xl overflow-hidden shadow-xs hover:scale-[1.03] active:scale-[0.98] transition-all cursor-pointer bg-slate-250 dark:bg-zinc-800"
+                      className="relative aspect-square rounded-xl overflow-hidden hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer bg-bg-soft border border-brand-secondary/8"
                     >
                       <img
                         src={item.url}
@@ -187,23 +187,23 @@ export default function GalleryView({
 
       {/* 3. Immersive Overlay Photo view detail Modal */}
       {previewItem && (
-        <div className="fixed inset-0 z-[4000] bg-black/98 backdrop-blur-2xl flex flex-col justify-between pointer-events-auto select-none font-sans text-white p-4">
+        <div className="fixed inset-0 z-[4000] bg-black/98 backdrop-blur-3xl flex flex-col justify-between pointer-events-auto select-none font-ui text-white p-4">
           
           {/* Top closing items */}
-          <div className="flex items-center justify-between py-2.5 shrink-0 z-50">
-            <span className="text-xs font-black tracking-wide text-zinc-100">
-              📅 {previewItem.date}
+          <div className="flex items-center justify-between py-2.5 shrink-0 z-50 font-ui">
+            <span className="text-[13px] font-bold text-zinc-300 font-ui">
+              {previewItem.date}
             </span>
             <button
               onClick={() => setPreviewItem(null)}
-              className="p-1.5 bg-zinc-850 hover:bg-zinc-800 text-white rounded-full transition-colors cursor-pointer border-none"
+              className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full transition-colors cursor-pointer border-none font-ui font-bold"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Centered big images viewer */}
-          <div className="flex-1 flex items-center justify-center relative p-2 min-h-0 bg-black">
+          <div className="flex-1 flex items-center justify-center relative p-2 min-h-0">
             <img
               src={previewItem.url}
               alt={previewItem.title}
@@ -212,18 +212,18 @@ export default function GalleryView({
             />
           </div>
 
-          {/* Bottom card actions & title annotations */}
-          <div className="p-4 bg-zinc-900/60 border border-zinc-800/50 rounded-2xl md:max-w-md mx-auto w-full space-y-4 shrink-0 z-50 mt-4">
+          {/* Bottom card actions & title annotations using iOS standards */}
+          <div className="p-4 bg-zinc-900 border border-zinc-800/80 rounded-[18px] md:max-w-md mx-auto w-full space-y-4 shrink-0 z-50 mt-4 shadow-xl font-ui">
             
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold text-[#8E8E93] uppercase tracking-widest pl-0.5">足点回忆</span>
-              <h3 className="text-sm font-black text-zinc-100 leading-tight">
+            <div className="space-y-1 font-ui">
+              <span className="text-[13px] font-bold text-zinc-400 uppercase tracking-wider block mb-0.5 font-ui">足记回忆</span>
+              <h3 className="text-[17px] font-bold text-zinc-100 leading-snug font-ui">
                 {previewItem.title}
               </h3>
               
-              <div className="flex items-center gap-1.5 text-xs text-[#8E8E93]">
-                <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                <span className="truncate">{previewItem.locationName}</span>
+              <div className="flex items-center gap-1.5 text-sm text-zinc-400 font-ui">
+                <MapPin className="w-4 h-4 text-brand-accent animate-pulse" />
+                <span className="truncate font-ui">{previewItem.locationName}</span>
               </div>
             </div>
 
@@ -232,11 +232,11 @@ export default function GalleryView({
               onClick={() => {
                 onSelectPoint(previewItem.pointId);
                 setPreviewItem(null);
-                onNavigateToTab('map'); // Send back map tab
+                onNavigateToTab('map');
               }}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-[#007AFF] text-white hover:opacity-95 duration-150 transition-all rounded-xl font-bold text-xs ring-4 ring-[#007AFF]/15 cursor-pointer border-none"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-full font-bold text-sm cursor-pointer border-none transition-all primary-button font-ui"
             >
-              <Navigation className="w-4 h-4 fill-white shrink-0" />
+              <Navigation className="w-4 h-4 fill-[#FFF9EF] shrink-0" />
               <span>在地图上定位此瞬间</span>
             </button>
           </div>

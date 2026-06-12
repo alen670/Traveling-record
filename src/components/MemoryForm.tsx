@@ -11,18 +11,11 @@ import {
   MapPin, 
   Tag, 
   Calendar, 
-  Heart, 
-  Cloud, 
   Lock, 
-  Eye, 
   Trash2, 
   Camera, 
-  Check, 
   RefreshCw,
-  Sparkles,
-  Award,
   Globe,
-  Compass,
   FileText
 } from 'lucide-react';
 
@@ -151,7 +144,7 @@ export default function MemoryForm({
           }
         };
       };
-      reader.readAsDataURL(file as any);
+      reader.readAsDataURL(file as Blob);
     });
   };
 
@@ -178,11 +171,11 @@ export default function MemoryForm({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
-      alert('请记录此段回忆的标题');
+      alert('请输入此次回忆的简短标题');
       return;
     }
     if (!locationName.trim()) {
-      alert('请填写一个所属地标名称');
+      alert('请输入所属地点');
       return;
     }
 
@@ -205,83 +198,83 @@ export default function MemoryForm({
   };
 
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] text-black dark:text-white rounded-t-[30px] sm:rounded-3xl max-h-full overflow-y-auto flex flex-col font-sans select-none border-0">
+    <div className="bg-bg-page text-text-primary rounded-t-[24px] max-h-full overflow-y-auto flex flex-col font-ui select-none border-0">
       
-      {/* 1. iOS Glass Header bar */}
-      <div className="bg-slate-100/40 dark:bg-zinc-800/20 p-5 shrink-0 border-b border-slate-200/40 dark:border-zinc-800/40 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <FileText className="w-5 h-5 text-[#007AFF] animate-pulse" />
-          <div>
-            <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
-              记录一段回忆
+      {/* 1. iOS Translucent Header bar */}
+      <div className="bg-bg-card p-4 shrink-0 border-b border-brand-secondary/10 flex items-center justify-between font-ui">
+        <div className="flex items-center gap-2 font-ui">
+          <FileText className="w-5 h-5 text-brand-primary" />
+          <div className="font-ui">
+            <h1 className="text-[17px] font-bold tracking-tight text-text-primary leading-tight font-ui">
+              记录此刻
             </h1>
-            <p className="text-[10px] text-[#8E8E93]">Apple Journal style • 我的心意日记</p>
+            <p className="text-[13px] text-text-secondary mt-0.5 font-ui">今天在这里发生了什么？</p>
           </div>
         </div>
         
         <button
           onClick={onCancel}
-          className="text-[#8E8E93] hover:text-slate-600 p-1.5 bg-slate-100 dark:bg-zinc-800 rounded-full hover:scale-105 active:scale-95 transition-all cursor-pointer border-none"
+          className="text-text-secondary hover:opacity-85 p-1.5 bg-bg-soft rounded-full hover:scale-103 cursor-pointer border-none font-ui font-bold"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="p-5 space-y-5">
         
-        {/* 2. Apple Maps Styled Location Interactive Mini-Card */}
-        <div className="p-3 bg-slate-50 dark:bg-[#2C2C2E] border border-slate-100 dark:border-zinc-800/40 rounded-2xl flex items-center gap-3 shadow-xs">
-          <div className="w-10 h-10 rounded-full bg-[#007AFF]/10 flex items-center justify-center shrink-0">
-            <MapPin className="w-5 h-5 text-[#007AFF]" />
+        {/* 2. Apple Maps Styled Location Card */}
+        <div className="p-3 bg-bg-card border border-brand-secondary/8 rounded-[12px] flex items-center gap-3 shadow-xs">
+          <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center shrink-0">
+            <MapPin className="w-5 h-5 text-brand-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <span className="text-[9px] font-bold text-[#8E8E93] uppercase tracking-widest block mb-0.5">足点标记</span>
+            <span className="text-[13px] font-bold text-text-muted block mb-0.5">记录地点</span>
             <input
               type="text"
               required
-              placeholder="西湖山水岸"
+              placeholder="西湖边长椅"
               value={locationName}
               onChange={(e) => setLocationName(e.target.value)}
-              className="w-full text-xs font-bold bg-transparent outline-none border-none border-b border-transparent focus:border-slate-300 dark:focus:border-zinc-700 text-slate-800 dark:text-zinc-100 p-0"
+              className="w-full text-[15px] font-bold bg-transparent outline-none border-none text-text-primary p-0"
             />
           </div>
         </div>
 
         {/* 3. Lined Notebook Title Entry */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">回忆标题</span>
+          <span className="text-[13px] font-bold text-text-muted tracking-wide pl-0.5">日记标题</span>
           <input
             type="text"
             required
-            placeholder="今天，发生了什么美妙的事？"
+            placeholder="今天发生了什么故事？"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-lg font-black bg-transparent border-b border-slate-200 dark:border-zinc-800 focus:border-[#007AFF] dark:focus:border-[#0A84FF] outline-none py-1.5 transition-colors placeholder:text-slate-350 dark:placeholder:text-zinc-600 text-slate-900 dark:text-white"
+            className="w-full text-[17px] font-bold bg-transparent border-b border-brand-secondary/15 focus:border-brand-primary outline-none py-1 transition-colors placeholder:text-text-muted text-text-primary"
           />
         </div>
 
         {/* 4. Elegant Date and category picks */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
-            <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">纪念日</span>
+            <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">纪念日</span>
             <div className="relative">
               <input
                 type="date"
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full pl-8 pr-3 py-2.5 text-xs bg-slate-50 dark:bg-[#2C2C2E] border border-transparent dark:border-zinc-800 rounded-xl outline-none text-slate-900 dark:text-white cursor-pointer hover:bg-slate-100/50"
+                className="w-full pl-8 pr-3 py-2 text-[13px] bg-bg-soft border border-transparent rounded-[10px] outline-none text-text-primary cursor-pointer hover:bg-bg-soft/80"
               />
-              <Calendar className="absolute left-2.5 top-3 w-4.5 h-4.5 text-slate-400 pointer-events-none" />
+              <Calendar className="absolute left-2.5 top-2.5 w-4.5 h-4.5 text-text-muted pointer-events-none" />
             </div>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">足印分类</span>
+            <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">分类属性</span>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as TravelCategory)}
-              className="w-full px-3 py-2.5 text-xs bg-slate-50 dark:bg-[#2C2C2E] border border-transparent dark:border-zinc-800 rounded-xl outline-none text-slate-900 dark:text-white cursor-pointer hover:bg-slate-100/50"
+              className="w-full px-3 py-2 text-[13px] bg-bg-soft border border-transparent rounded-[10px] outline-none text-text-primary cursor-pointer hover:bg-bg-soft/80"
             >
               {TRAVEL_CATEGORIES.map((cat) => (
                 <option key={cat.value} value={cat.value}>
@@ -294,7 +287,7 @@ export default function MemoryForm({
 
         {/* 5. Mood Selector pills */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">心中情绪</span>
+          <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">心中情绪</span>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide snap-x">
             {MOOD_OPTIONS.map((opt) => {
               const isSelected = mood === opt.emoji;
@@ -303,10 +296,10 @@ export default function MemoryForm({
                   key={opt.emoji}
                   type="button"
                   onClick={() => setMood(opt.emoji)}
-                  className={`px-3 py-2 rounded-xl border text-xs shrink-0 font-bold flex items-center gap-1.5 transition-all snap-center ${
+                  className={`px-3 py-1.5 rounded-[10px] border text-[13px] shrink-0 font-bold flex items-center gap-1 transition-all snap-center cursor-pointer ${
                     isSelected
-                      ? 'bg-[#007AFF]/10 border-transparent text-[#007AFF] shadow-sm'
-                      : 'bg-slate-50 dark:bg-zinc-800 border-transparent text-slate-750 dark:text-zinc-300 hover:bg-slate-100'
+                      ? 'bg-brand-primary/10 border-transparent text-brand-primary shadow-xs'
+                      : 'bg-bg-soft border-transparent text-text-secondary hover:bg-opacity-80'
                   }`}
                 >
                   <span className="text-sm">{opt.emoji}</span>
@@ -319,7 +312,7 @@ export default function MemoryForm({
 
         {/* 6. Weather options */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">晴雨天气</span>
+          <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">晴雨天气</span>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide snap-x">
             {WEATHER_OPTIONS.map((opt) => {
               const isSelected = weather === opt.emoji;
@@ -328,10 +321,10 @@ export default function MemoryForm({
                   key={opt.emoji}
                   type="button"
                   onClick={() => setWeather(opt.emoji)}
-                  className={`px-3 py-2 rounded-xl border text-xs shrink-0 font-bold flex items-center gap-1.5 transition-all snap-center ${
+                  className={`px-3 py-1.5 rounded-[10px] border text-[13px] shrink-0 font-bold flex items-center gap-1 transition-all snap-center cursor-pointer ${
                     isSelected
-                      ? 'bg-[#5856D6]/15 border-transparent text-[#5856D6]'
-                      : 'bg-slate-50 dark:bg-zinc-800 border-transparent text-slate-750 dark:text-zinc-300 hover:bg-slate-100'
+                      ? 'bg-brand-accent/10 border-transparent text-brand-accent'
+                      : 'bg-bg-soft border-transparent text-text-secondary hover:bg-opacity-80'
                   }`}
                 >
                   <span className="text-sm">{opt.emoji}</span>
@@ -344,23 +337,23 @@ export default function MemoryForm({
 
         {/* 7. Privacy status selection toggler */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">私密可见度</span>
-          <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#2C2C2E] border border-slate-100 dark:border-zinc-800/40 rounded-2xl">
+          <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">可见性选择</span>
+          <div className="flex items-center justify-between p-3 bg-bg-card border border-brand-secondary/8 rounded-[12px]">
             <div className="flex items-center gap-2.5">
               {privacyStatus === 'private' ? (
                 <>
-                  <Lock className="w-4 h-4 text-emerald-500" />
+                  <Lock className="w-4 h-4 text-emerald-500 shrink-0" />
                   <div>
-                    <div className="text-xs font-bold">仅自己可见 (Private)</div>
-                    <p className="text-[9px] text-[#8E8E93]">默认安全保险箱隔离隔离</p>
+                    <div className="text-[13px] font-bold text-text-primary">仅自己可见 (Private)</div>
+                    <p className="text-[11px] text-text-muted mt-0.5">独存的私人日记</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <Globe className="w-4 h-4 text-[#007AFF]" />
+                  <Globe className="w-4 h-4 text-brand-primary shrink-0" />
                   <div>
-                    <div className="text-xs font-bold">公开可见 (Public)</div>
-                    <p className="text-[9px] text-[#8E8E93]">展示在您的足影地图上</p>
+                    <div className="text-[13px] font-bold text-text-primary">公开可见 (Public)</div>
+                    <p className="text-[11px] text-text-muted mt-0.5">展示在足迹墙中</p>
                   </div>
                 </>
               )}
@@ -370,12 +363,12 @@ export default function MemoryForm({
             <button
               type="button"
               onClick={() => setPrivacyStatus(p => p === 'private' ? 'public' : 'private')}
-              className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none ${
-                privacyStatus === 'private' ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-zinc-700'
+              className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none cursor-pointer ${
+                privacyStatus === 'private' ? 'bg-brand-primary' : 'bg-bg-soft'
               }`}
             >
               <div 
-                className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-200 ${
+                className={`w-5 h-5 bg-[#FFF9EF] rounded-full shadow-md transition-transform duration-200 ${
                   privacyStatus === 'private' ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
@@ -383,48 +376,48 @@ export default function MemoryForm({
           </div>
         </div>
 
-        {/* 8. Expansive beautiful Dairy Journal Note block */}
-        <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">岁月日记 · 随笔杂述</span>
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 p-4 bg-slate-50/50 dark:bg-[#1E1E1F] focus-within:ring-2 focus-within:ring-[#007AFF]/25 transition-all">
+        {/* 8. Expansive beautiful Dairy Journal Note block with 1.85 line height */}
+        <div className="space-y-1.5 font-ui font-bold">
+          <span className="text-[13px] font-bold text-text-muted tracking-wide pl-0.5 font-ui">岁月笔记</span>
+          <div className="rounded-[12px] border border-brand-secondary/12 p-4 bg-bg-soft/40 focus-within:ring-1 focus-within:ring-brand-primary/25 transition-all">
             <textarea
-              placeholder="书写这一刻发生的人和故事、心情与收获吧。在这个属于你的数字足迹记忆本里，属于你的每一秒都有立足之地..."
+              placeholder="今天在这里，发生了什么温暖的故事？在这个专属的地方，记起当时的微风和心声吧..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              rows={8}
-              className="w-full text-xs sm:text-sm leading-relaxed bg-transparent outline-none border-none text-slate-800 dark:text-zinc-200 resize-none placeholder:text-[#8E8E93]"
+              rows={6}
+              className="w-full text-[15px] leading-[1.85] bg-transparent outline-none border-none text-text-primary resize-none placeholder:text-text-muted font-light font-serif tracking-wide"
             />
           </div>
         </div>
 
         {/* 9. Tags entry */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5">书签标签 (按 Enter 添加)</span>
-          <div className="flex flex-wrap gap-1.5 p-2 bg-slate-50 dark:bg-[#2C2C2E] border border-transparent dark:border-zinc-800 rounded-2xl min-h-12 items-center">
+          <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">记事书签 (按 Enter 完成)</span>
+          <div className="flex flex-wrap gap-1.5 p-2 bg-bg-soft border border-transparent rounded-[12px] min-h-12 items-center">
             {tags.map((tag, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1 text-[10px] font-semibold bg-[#007AFF]/10 dark:bg-zinc-800 text-[#007AFF] px-2 py-0.5 rounded-full"
+                className="inline-flex items-center gap-1 text-[11px] font-bold bg-brand-secondary/10 text-brand-secondary px-2.5 py-0.5 rounded-full"
               >
                 #{tag}
                 <button
                   type="button"
                   onClick={() => removeTag(idx)}
-                  className="hover:scale-110 text-[#007AFF] rounded-full p-0.5 transition-transform"
+                  className="hover:scale-110 text-brand-secondary rounded-full p-0.5 transition-transform cursor-pointer border-none bg-transparent"
                 >
                   <X className="w-2.5 h-2.5" />
                 </button>
               </span>
             ))}
-            <div className="flex-1 flex min-w-[80px] items-center">
-              <span className="text-xs text-slate-400 pl-1">#</span>
+            <div className="flex-1 flex min-w-[100px] items-center">
+              <span className="text-xs text-text-muted pl-1">#</span>
               <input
                 type="text"
-                placeholder="添加标签"
+                placeholder="增加书签"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
-                className="w-full text-xs bg-transparent outline-none py-0.5 text-slate-800 dark:text-zinc-200"
+                className="w-full text-xs bg-transparent outline-none py-0.5 text-text-primary"
               />
             </div>
           </div>
@@ -432,22 +425,22 @@ export default function MemoryForm({
 
         {/* 10. Apple Photos insert uploader */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-black uppercase text-[#8E8E93] tracking-wider pl-0.5 text-slate-400">影像备忘相册网格</span>
+          <span className="text-[13px] font-semibold text-text-muted tracking-wide pl-0.5">媒体备忘相册 (最多 8 张)</span>
           <div className="grid grid-cols-4 gap-2">
             {images.map((img, idx) => (
-              <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden group border border-slate-100 bg-slate-150">
+              <div key={idx} className="relative aspect-square rounded-[10px] overflow-hidden group border border-brand-secondary/8 bg-bg-soft">
                 <img
                   src={img}
                   alt={`mem-img-${idx}`}
-                  className="w-full h-full object-cover group-hover:scale-105 duration-200 transition-all"
+                  className="w-full h-full object-cover group-hover:scale-103 duration-200 transition-all"
                   referrerPolicy="no-referrer"
                 />
                 <button
                   type="button"
                   onClick={() => removeImage(idx)}
-                  className="absolute top-1 right-1 bg-red-650 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-1 right-1 bg-red-650/95 text-[#FFF9EF] rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer border-none"
                 >
-                  <Trash2 className="w-3 h-3" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
             ))}
@@ -457,14 +450,14 @@ export default function MemoryForm({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isCompressing}
-                className="aspect-square rounded-2xl border-2 border-dashed border-slate-300 dark:border-zinc-700 hover:border-[#007AFF] flex flex-col items-center justify-center gap-1 bg-slate-50 dark:bg-[#1C1C1E] text-[#8E8E93] hover:text-[#007AFF] transition-all cursor-pointer disabled:opacity-50"
+                className="aspect-square rounded-[10px] border-2 border-dashed border-brand-secondary/25 hover:border-brand-primary flex flex-col items-center justify-center gap-1 bg-bg-soft text-text-muted hover:text-brand-primary transition-all cursor-pointer disabled:opacity-50"
               >
                 {isCompressing ? (
                   <RefreshCw className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
-                    <Camera className="w-5 h-5 opacity-70" />
-                    <span className="text-[8px] font-bold">选择图片 ({images.length}/8)</span>
+                    <Camera className="w-5.5 h-5.5 opacity-70" />
+                    <span className="text-[8px] font-bold">加图 ({images.length}/8)</span>
                   </>
                 )}
               </button>
@@ -480,23 +473,23 @@ export default function MemoryForm({
           />
         </div>
 
-        {/* Silent Lat LNG coords block */}
-        <div className="flex justify-between items-center text-[10px] text-[#8E8E93] font-mono p-1">
-          <span>{lat.toFixed(5)}°N</span>
-          <span>{lng.toFixed(5)}°E</span>
+        {/* Quick coordinates alignment labels */}
+        <div className="flex justify-between items-center text-[10px] text-text-muted font-mono px-1">
+          <span>十进制纬度: {lat.toFixed(5)}°</span>
+          <span>十进制经度: {lng.toFixed(5)}°</span>
         </div>
 
         {/* Save/delete controls bar */}
-        <div className="flex items-center gap-3 pt-3 border-t border-slate-100 dark:border-zinc-800/40">
+        <div className="flex items-center gap-3 pt-3.5 border-t border-brand-secondary/10">
           {pointToEdit && onDelete && (
             <button
               type="button"
               onClick={() => {
-                if (window.confirm('您确定要彻底删除这段心爱的日记记忆吗？原路销毁，无处寻找。')) {
+                if (window.confirm('您确定要彻底删除这段心爱的日记记忆吗？删除之后将无处寻找。')) {
                   onDelete(pointToEdit.id);
                 }
               }}
-              className="flex items-center gap-1 px-4 py-3 bg-red-50 hover:bg-red-100 text-red-650 rounded-2xl text-xs font-black transition-colors shrink-0 border-none"
+              className="flex items-center gap-1 px-4 py-3 bg-red-50 hover:bg-red-100/10 text-red-650 rounded-full text-xs font-bold transition-colors shrink-0 border-none cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
               <span>整编销毁</span>
@@ -506,16 +499,16 @@ export default function MemoryForm({
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-white text-xs py-3 rounded-2xl font-bold transition-all border-none"
+            className="flex-1 rounded-full text-xs py-3 font-bold cursor-pointer border-none transition-all secondary-chip text-center"
           >
             返回
           </button>
 
           <button
             type="submit"
-            className="flex-1 bg-[#007AFF] text-white text-xs py-3 rounded-2xl font-black shadow-md hover:opacity-95 text-center cursor-pointer border-none"
+            className="flex-1 rounded-full text-xs py-3 font-bold cursor-pointer border-none transition-all primary-button text-center shadow-md"
           >
-            封存日记
+            保存记录
           </button>
         </div>
 

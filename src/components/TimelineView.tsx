@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { MemoryPoint, TravelCategory } from '../types';
 import { TRAVEL_CATEGORIES } from '../data';
-import { Search, Calendar, Heart, Cloud, Tag, Lock, Globe, ArrowUpDown, ChevronRight, Fuel, Compass } from 'lucide-react';
+import { Search, Calendar, Tag, Lock, ArrowUpDown, MapPin, Inbox } from 'lucide-react';
 
 interface TimelineViewProps {
   points: MemoryPoint[];
@@ -78,42 +78,40 @@ export default function TimelineView({
   const groupedTimeline = groupMemoriesByMonth();
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F2F2F7] dark:bg-black overflow-hidden font-sans text-black dark:text-white select-none">
+    <div className="flex-1 flex flex-col h-full bg-bg-page overflow-hidden font-ui text-text-primary select-none">
       
-      {/* 1. Cupertino Apple Header and Search Controls */}
-      <div className="bg-white/80 dark:bg-[#1C1C1E]/85 backdrop-blur-2xl p-4 border-b border-slate-200/40 dark:border-zinc-800/60 shrink-0 space-y-3.5">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">时间轴</h1>
+      {/* 1. Cupertino iOS Search & Header Segment (Clean off-white padding background) */}
+      <div className="bg-bg-card backdrop-blur-2xl px-4 pt-4 pb-0 items-center border-b border-brand-secondary/10 shrink-0 flex flex-col gap-4">
+        <div className="flex items-center justify-between w-full">
+          <h1 className="text-[28px] font-bold tracking-tight text-text-primary font-ui">时间轴</h1>
           
           <button
             onClick={() => setSortOrder((p) => (p === 'newest' ? 'oldest' : 'newest'))}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-[#007AFF] cursor-pointer shrink-0 border-none bg-transparent"
-            title={sortOrder === 'newest' ? '按时间由远到近排序' : '按时间由近到远排序'}
+            className="p-1.5 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-full transition-colors text-brand-primary cursor-pointer shrink-0 border-none bg-transparent"
+            title={sortOrder === 'newest' ? '最旧优先' : '最新优先'}
           >
-            <ArrowUpDown className="w-4 h-4" />
+            <ArrowUpDown className="w-5 h-5 animate-scale" />
           </button>
         </div>
 
-        {/* Search input bar */}
-        <div className="relative">
+        {/* Apple Style search block */}
+        <div className="relative w-full">
           <input
             type="text"
-            placeholder="搜索日记内容、标题、地标或#标签"
+            placeholder="搜索回忆内容、地标或 #标签"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-100 dark:bg-zinc-800 border-none rounded-xl outline-none focus:bg-slate-200/50 dark:focus:bg-zinc-750 text-slate-900 dark:text-white font-medium"
+            className="w-full pl-9 pr-4 py-2.5 text-xs bg-bg-soft border-none rounded-xl outline-none focus:ring-1 focus:ring-brand-primary/25 text-text-primary placeholder-[#9A948C] font-bold font-ui"
           />
-          <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-[#8E8E93]" />
+          <Search className="absolute left-3 top-3 w-4 h-4 text-text-muted" />
         </div>
 
-        {/* Categories Scroller row */}
-        <div className="flex gap-2.5 overflow-x-auto pb-0.5 scrollbar-hide">
+        {/* Categories Chips bar */}
+        <div className="flex gap-2 pb-3 w-full overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-3 py-1.5 rounded-full text-[10px] shrink-0 font-bold transition-all border-none ${
-              selectedCategory === 'all'
-                ? 'bg-[#007AFF] text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300'
+            className={`px-4 py-2 rounded-full text-xs font-bold shrink-0 cursor-pointer transition-all secondary-chip font-ui ${
+              selectedCategory === 'all' ? 'active' : ''
             }`}
           >
             全部 ({points.length})
@@ -126,10 +124,8 @@ export default function TimelineView({
               <button
                 key={cat.value}
                 onClick={() => setSelectedCategory(cat.value)}
-                className={`px-3 py-1.5 rounded-full text-[10px] shrink-0 font-bold transition-all border-none flex items-center gap-1 ${
-                  selectedCategory === cat.value
-                    ? 'bg-[#007AFF] text-white'
-                    : 'bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300'
+                className={`px-4 py-2 rounded-full text-xs font-bold shrink-0 cursor-pointer transition-all flex items-center gap-1.5 secondary-chip font-ui ${
+                  selectedCategory === cat.value ? 'active' : ''
                 }`}
               >
                 <span>{cat.icon}</span>
@@ -140,93 +136,104 @@ export default function TimelineView({
         </div>
       </div>
 
-      {/* 2. Scroll Area containing Timeline stream */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 scrollbar-hide">
+      {/* 2. Primary Page Content Area */}
+      <div className="flex-1 overflow-y-auto pb-6 scrollbar-hide font-ui">
         {groupedTimeline.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-12 text-center h-[60vh] text-[#8E8E93]">
-            <Calendar className="w-12 h-12 text-slate-300 dark:text-zinc-700 mb-3 animate-[pulse_3s_infinite]" />
-            <p className="text-xs font-black">静如秋叶，亦无记忆</p>
-            <p className="text-[10px] mt-1 text-[#8E8E93] max-w-xs">尚未录入此类别的时光记录，请点击地图或右下角“+”按钮，记事当下生活情趣</p>
+          <div className="flex flex-col items-center justify-center p-12 text-center h-[55vh] text-[#8E8E93] px-4 font-ui">
+            <Inbox className="w-10 h-10 text-text-muted/40 mb-3" />
+            <p className="text-[15px] font-bold text-text-secondary">还没有记忆点</p>
+            <p className="text-[13px] mt-1 text-text-muted max-w-xs leading-relaxed font-ui">
+              在地图上点一下，记录你来过的地方。
+            </p>
           </div>
         ) : (
           <div className="space-y-6">
             {groupedTimeline.map(([monthLabel, memories]) => (
-              <div key={monthLabel} className="space-y-3.5">
+              <div key={monthLabel} className="space-y-[12px] font-ui">
                 
-                {/* Year Month sticky line header */}
-                <div className="sticky top-0 bg-[#F2F2F7]/95 dark:bg-black/95 backdrop-blur-md py-1.5 z-10 flex items-center gap-1 px-1.5">
-                  <span className="text-xs font-black tracking-wider text-slate-900 dark:text-zinc-200">
+                {/* Year/Month Divider (Apple Standard header block) */}
+                <div className="sticky top-0 bg-bg-page/95 backdrop-blur-md py-2 z-10 flex items-center gap-1.5 px-4 transition-all font-ui">
+                  <span className="text-[13px] font-extrabold text-brand-secondary uppercase tracking-wider font-ui">
                     {monthLabel}
                   </span>
-                  <span className="text-[9px] font-bold text-[#8E8E93] uppercase tracking-wider bg-slate-205 dark:bg-zinc-800 px-1.5 py-0.5 rounded-md">
-                    {memories.length} 篇
+                  <div className="h-px bg-brand-secondary/10 flex-1 ml-1" />
+                  <span className="text-[11px] font-bold text-text-muted font-ui">
+                    {memories.length} 篇回忆
                   </span>
                 </div>
 
-                {/* Sub list */}
-                <div className="space-y-3">
+                {/* Sub-list of memories with strictly balanced spaces */}
+                <div className="space-y-4 px-4 font-ui">
                   {memories.map((point) => {
                     const firstImage = point.images && point.images.length > 0 ? point.images[0] : null;
                     const catConfig = TRAVEL_CATEGORIES.find(c => c.value === point.category) || TRAVEL_CATEGORIES[TRAVEL_CATEGORIES.length - 1];
+                    const isSelected = selectedPointId === point.id;
 
                     return (
                       <div
                         key={point.id}
                         onClick={() => {
                           onSelectPoint(point.id);
-                          onNavigateToTab('map'); // Send back focusing map
+                          onNavigateToTab('map');
                         }}
-                        className="bg-white dark:bg-[#1C1C1E] rounded-3xl p-4 border border-slate-100/10 dark:border-zinc-800/40 shadow-xs hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer flex flex-col md:flex-row gap-4 justify-between"
+                        className={`bg-bg-card rounded-[18px] p-4.5 border border-brand-secondary/10 hover:border-brand-secondary/20 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col md:flex-row gap-4 justify-between font-ui ${
+                          isSelected ? 'ring-2 ring-brand-primary/45 shadow-lg shadow-brand-primary/10' : ''
+                        }`}
                       >
-                        {/* Summary details */}
-                        <div className="flex-1 min-w-0 flex flex-col justify-between">
-                          <div className="space-y-1.5">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="text-[9px] font-black uppercase text-[#8E8E93]">
+                        {/* Summary side */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-between font-ui">
+                          <div className="space-y-2.5">
+                            {/* Metadata labels */}
+                            <div className="flex items-center gap-1.5 flex-wrap text-xs font-ui">
+                              <span className="font-bold text-text-secondary bg-bg-soft px-2.5 py-0.5 rounded-lg font-ui">
                                 {point.date}
                               </span>
-                              <div className="w-1 h-1 rounded-full bg-slate-300 dark:bg-zinc-700" />
-                              <span className="text-[10px] font-bold text-[#007AFF] bg-[#007AFF]/5 px-2 py-0.5 rounded-md flex items-center gap-1">
-                                {catConfig.icon} {point.locationName}
+                              <div className="w-1 h-1 rounded-full bg-brand-secondary/20" />
+                              <span className="text-brand-primary font-bold flex items-center gap-1 bg-brand-primary/5 px-2.5 py-0.5 rounded-lg font-ui">
+                                <MapPin className="w-3 h-3 text-brand-accent animate-pulse" />
+                                {point.locationName}
                               </span>
                               {point.privacyStatus === 'private' && (
-                                <Lock className="w-3 h-3 text-[#8E8E93]" />
+                                <Lock className="w-3.5 h-3.5 text-text-muted" />
                               )}
                             </div>
 
-                            <h3 className="text-sm font-black text-slate-900 dark:text-white leading-tight truncate">
+                            {/* Crisp Titles with specified 17px size */}
+                            <h3 className="text-[17px] font-bold text-text-primary leading-snug tracking-tight truncate font-ui">
                               {point.title}
                             </h3>
 
+                            {/* Cozy lines of descriptions with 15px size */}
                             {point.notes && (
-                              <p className="text-[11px] sm:text-xs text-[#8E8E93] leading-relaxed line-clamp-2 md:line-clamp-3 font-light">
+                              <p className="text-[14px] text-text-secondary/90 leading-[1.85] tracking-wide line-clamp-2 md:line-clamp-3 font-light font-serif">
                                 {point.notes}
                               </p>
                             )}
                           </div>
 
-                          {/* Chips section */}
-                          <div className="flex flex-wrap items-center gap-1.5 mt-3.5 pt-2 border-t border-slate-100/40 dark:border-zinc-800/40">
+                          {/* Chips Section with 13px captions */}
+                          <div className="flex flex-wrap items-center gap-2 mt-4 pt-2 border-t border-brand-secondary/10 text-[13px] font-ui">
                             {point.mood && (
-                              <span className="text-[10px] font-bold text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800/70 px-2 py-0.5 rounded-full">
-                                Mood: {point.mood}
+                              <span className="font-bold text-text-secondary bg-bg-soft px-2.5 py-0.5 rounded-full font-ui">
+                                心情: {point.mood} {point.weather && `| ${point.weather}`}
                               </span>
                             )}
                             
                             {point.tags && point.tags.slice(0, 3).map((tag, idx) => (
-                              <span key={idx} className="text-[9px] font-semibold text-[#007AFF] bg-[#007AFF]/10 dark:bg-zinc-805/50 px-2 py-0.5 rounded-full">
-                                #{tag}
+                              <span key={idx} className="font-bold text-brand-secondary bg-brand-secondary/8 px-2.5 py-0.5 rounded-full flex items-center gap-0.5 font-ui">
+                                <Tag className="w-3 h-3 shrink-0" />
+                                {tag}
                               </span>
                             ))}
                           </div>
                         </div>
 
-                        {/* Collage on right side if image is present */}
+                        {/* Elegant Photos sidebar if relevant */}
                         {firstImage && (
-                          <div className="w-full md:w-32 h-24 md:h-24 rounded-2xl overflow-hidden shrink-0 bg-slate-200 dark:bg-zinc-800">
+                          <div className="w-full md:w-28 h-24 rounded-[12px] overflow-hidden shrink-0 bg-bg-soft border border-brand-secondary/5 shadow-inner">
                             <img
                               src={firstImage}
-                              alt="timeline-feature"
+                              alt={point.title}
                               className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                               referrerPolicy="no-referrer"
                             />

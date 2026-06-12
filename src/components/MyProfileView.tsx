@@ -12,21 +12,12 @@ import {
   Trash2, 
   RefreshCw, 
   Lock, 
-  Key, 
+  Sliders, 
   Eye, 
   ChevronRight, 
-  Sliders, 
-  Grid, 
-  Info,
-  Database,
-  CloudLightning,
   Sun,
   Moon,
-  Github,
-  Globe,
-  Camera,
-  Map,
-  User,
+  CloudLightning,
   Check
 } from 'lucide-react';
 
@@ -51,7 +42,7 @@ export default function MyProfileView({
   const [nickname, setNickname] = useState(() => localStorage.getItem('SETTING_NICKNAME') || '私密足印旅人');
   const [isEditingName, setIsEditingName] = useState(false);
 
-  // iOS Toggles backing states
+  // iOS Toggles states
   const [defaultVisibility, setDefaultVisibility] = useState(() => localStorage.getItem('SETTING_DEFAULT_VISIBILITY') || 'private');
   const [locationFuzzing, setLocationFuzzing] = useState(() => localStorage.getItem('SETTING_LOCATION_FUZZING') === 'true');
   const [hideShareCoords, setHideShareCoords] = useState(() => localStorage.getItem('SETTING_HIDE_SHARE_COORDS') === 'true');
@@ -134,21 +125,20 @@ export default function MyProfileView({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F2F2F7] dark:bg-black overflow-hidden font-sans text-black dark:text-white select-none">
+    <div className="flex-1 flex flex-col h-full bg-bg-page overflow-hidden font-ui text-text-primary select-none">
       
       {/* iOS Header Title Bar */}
-      <div className="bg-white/80 dark:bg-[#1C1C1E]/85 backdrop-blur-2xl px-5 py-4 border-b border-slate-200/40 dark:border-zinc-800/60 shrink-0 flex items-center justify-between">
-        <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">设置</h1>
-        <span className="text-[10px] font-bold text-[#8E8E93]">iOS Settings style</span>
+      <div className="bg-bg-card backdrop-blur-2xl px-5 py-4 border-b border-brand-secondary/10 shrink-0 font-ui">
+        <h1 className="text-[28px] font-bold tracking-tight text-text-primary font-ui">我的设置</h1>
       </div>
 
       {/* Settings Scroll content */}
-      <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6 scrollbar-hide pb-12">
+      <div className="flex-1 overflow-y-auto px-4 py-5 space-y-6 scrollbar-hide pb-16">
         
         {/* 1. Cupertino iCloud profile summary card */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 flex items-center gap-4 shadow-xs">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 text-white flex items-center justify-center text-xl font-black shrink-0 shadow-md">
-            旅
+        <div className="bg-bg-card rounded-[18px] p-4 flex items-center gap-4 border border-brand-secondary/8 shadow-xs">
+          <div className="w-12 h-12 rounded-full bg-brand-primary text-[#FFF9EF] flex items-center justify-center text-lg font-black shrink-0">
+            足
           </div>
           <div className="flex-1 min-w-0">
             {isEditingName ? (
@@ -159,13 +149,13 @@ export default function MyProfileView({
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
                   onBlur={() => setIsEditingName(false)}
-                  className="bg-slate-100 dark:bg-zinc-850 px-2 py-0.5 rounded-md text-sm font-bold text-slate-900 dark:text-white outline-none"
+                  className="bg-bg-soft px-2.5 py-1 rounded-[8px] text-xs font-bold text-text-primary outline-none border-none"
                   autoFocus
                 />
                 <button 
                   type="button"
                   onClick={() => setIsEditingName(false)}
-                  className="text-xs text-[#007AFF] font-bold"
+                  className="text-xs text-brand-primary font-bold"
                 >
                   确定
                 </button>
@@ -173,39 +163,39 @@ export default function MyProfileView({
             ) : (
               <h2 
                 onClick={() => setIsEditingName(true)}
-                className="text-base font-black text-slate-950 dark:text-white leading-tight flex items-center gap-1.5 cursor-pointer hover:opacity-85"
-                title="点击修改昵称"
+                className="text-[17px] font-bold text-text-primary leading-tight flex items-center gap-2 cursor-pointer hover:opacity-85"
+                title="修改昵称"
               >
                 <span>{nickname}</span>
-                <span className="text-[10px] text-[#007AFF] bg-[#007AFF]/5 px-1.5 py-0.5 rounded-md font-bold">编辑</span>
+                <span className="text-xs text-brand-primary font-bold bg-brand-primary/10 px-2 py-0.5 rounded-[6px]">编辑</span>
               </h2>
             )}
-            <p className="text-[11px] text-[#8E8E93] truncate mt-1">Apple ID、iCloud、媒体与私人足印日记</p>
+            <p className="text-[13px] text-text-secondary truncate mt-0.5">本地回忆箱 • 本地沙盒极保密技术</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-[#8E8E93]" />
+          <ChevronRight className="w-4 h-4 text-text-muted" />
         </div>
 
         {/* 2. Group 1: Privacy Settings */}
-        <div className="space-y-1.5">
-          <span className="text-[9px] font-black text-[#8E8E93] uppercase tracking-wider pl-4">隐私与安全 (Privacy & Security)</span>
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl divide-y divide-slate-100/60 dark:divide-zinc-800 p-0 shadow-xs">
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wide pl-4">隐私安全等级</span>
+          <div className="bg-bg-card rounded-[18px] divide-y divide-brand-secondary/8 p-0 border border-brand-secondary/8 shadow-xs">
             
             {/* Row 1: Default privacy */}
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-md bg-[#007AFF] text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
                   <Lock className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold leading-tight block">默认可见度</span>
-                  <span className="text-[9px] text-[#8E8E93] mt-0.5">封存新写照时默认的最初私密可见等级</span>
+                  <span className="text-sm font-bold leading-normal block">默认可见度</span>
+                  <span className="text-xs text-text-secondary mt-0.5 block">封存新写照时默认的最初私密可见等级</span>
                 </div>
               </div>
               
               <select
                 value={defaultVisibility}
                 onChange={(e) => setDefaultVisibility(e.target.value)}
-                className="text-xs font-bold text-[#007AFF] bg-transparent outline-none border-none cursor-pointer"
+                className="text-xs font-bold text-brand-primary bg-transparent outline-none border-none cursor-pointer pr-1"
               >
                 <option value="private">仅自己可见</option>
                 <option value="public">公开可见</option>
@@ -215,24 +205,24 @@ export default function MyProfileView({
             {/* Row 2: Location fuzzing */}
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-md bg-purple-500 text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-brand-secondary/10 text-brand-secondary flex items-center justify-center shrink-0">
                   <Sliders className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold leading-tight block">地理位置模糊化</span>
-                  <span className="text-[9px] text-[#8E8E93] mt-0.5">自动针对周边物理坐标添加 200m 轻微随机噪点干扰</span>
+                  <span className="text-sm font-bold leading-normal block">地理位置模糊化</span>
+                  <span className="text-xs text-text-secondary mt-0.5 block">自动针对周边物理坐标添加约 200m 轻微变动干扰</span>
                 </div>
               </div>
               
               <button
                 type="button"
                 onClick={() => setLocationFuzzing(!locationFuzzing)}
-                className={`w-9 h-5 rounded-full p-0.5 transition-colors duration-200 outline-none border-none ${
-                  locationFuzzing ? 'bg-emerald-500' : 'bg-slate-350 dark:bg-zinc-700'
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none cursor-pointer ${
+                  locationFuzzing ? 'bg-brand-primary' : 'bg-bg-soft'
                 }`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-200 ${
-                  locationFuzzing ? 'translate-x-4' : 'translate-x-0'
+                <div className={`w-5 h-5 bg-[#FFF9EF] rounded-full shadow-md transition-transform duration-200 ${
+                  locationFuzzing ? 'translate-x-5' : 'translate-x-0'
                 }`} />
               </button>
             </div>
@@ -240,24 +230,24 @@ export default function MyProfileView({
             {/* Row 3: Hide Coords */}
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-md bg-rose-500 text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-brand-accent/10 text-brand-accent flex items-center justify-center shrink-0">
                   <Eye className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold leading-tight block">分享时隐藏高精经纬度</span>
-                  <span className="text-[9px] text-[#8E8E93] mt-0.5">将日记公开分享时裁剪掉精确 GPS 精细数字</span>
+                  <span className="text-sm font-bold leading-normal block">分享时隐藏精确坐标</span>
+                  <span className="text-xs text-text-secondary mt-0.5 block">在对外公开细节时自动裁剪高精度十进制数值</span>
                 </div>
               </div>
               
               <button
                 type="button"
                 onClick={() => setHideShareCoords(!hideShareCoords)}
-                className={`w-9 h-5 rounded-full p-0.5 transition-colors duration-200 outline-none border-none ${
-                  hideShareCoords ? 'bg-emerald-500' : 'bg-slate-350 dark:bg-zinc-700'
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none cursor-pointer ${
+                  hideShareCoords ? 'bg-brand-primary' : 'bg-bg-soft'
                 }`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-200 ${
-                  hideShareCoords ? 'translate-x-4' : 'translate-x-0'
+                <div className={`w-5 h-5 bg-[#FFF9EF] rounded-full shadow-md transition-transform duration-200 ${
+                  hideShareCoords ? 'translate-x-5' : 'translate-x-0'
                 }`} />
               </button>
             </div>
@@ -266,31 +256,31 @@ export default function MyProfileView({
         </div>
 
         {/* 3. Group 2: Data Encryption & storage */}
-        <div className="space-y-1.5">
-          <span className="text-[9px] font-black text-[#8E8E93] uppercase tracking-wider pl-4">数据与存储 (Data & Sync)</span>
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl divide-y divide-slate-100/60 dark:divide-zinc-800 p-0 shadow-xs">
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wide pl-4">数据与存储</span>
+          <div className="bg-bg-card rounded-[18px] divide-y divide-brand-secondary/8 p-0 border border-brand-secondary/8 shadow-xs">
             
             {/* Local Encryption */}
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-md bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold leading-tight block">安全密匙本地隔空锁</span>
-                  <span className="text-[9px] text-[#8E8E93] mt-0.5">使用底层 AES 核心针对本地 localStorage 保险库上锁</span>
+                  <span className="text-sm font-bold leading-normal block">安全密匙本地隔空锁</span>
+                  <span className="text-xs text-text-secondary mt-0.5 block">底层对本地沙盒数据库进行二级私钥锁死</span>
                 </div>
               </div>
               
               <button
                 type="button"
                 onClick={() => setLocalEncryption(!localEncryption)}
-                className={`w-9 h-5 rounded-full p-0.5 transition-colors duration-200 outline-none border-none ${
-                  localEncryption ? 'bg-emerald-500' : 'bg-slate-350 dark:bg-zinc-700'
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none cursor-pointer ${
+                  localEncryption ? 'bg-brand-primary' : 'bg-bg-soft'
                 }`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-200 ${
-                  localEncryption ? 'translate-x-4' : 'translate-x-0'
+                <div className={`w-5 h-5 bg-[#FFF9EF] rounded-full shadow-md transition-transform duration-200 ${
+                  localEncryption ? 'translate-x-5' : 'translate-x-0'
                 }`} />
               </button>
             </div>
@@ -298,24 +288,24 @@ export default function MyProfileView({
             {/* Cloud Sync */}
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-md bg-[#5856D6] text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-brand-accent/10 text-brand-accent flex items-center justify-center shrink-0">
                   <CloudLightning className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold leading-tight block">分布式 WebDAV 云同步</span>
-                  <span className="text-[9px] text-[#8E8E93] mt-0.5">支持自建 WebDAV 网盘、坚果云一键双向安全同步</span>
+                  <span className="text-sm font-bold leading-normal block">iCloud / WebDAV 同步</span>
+                  <span className="text-xs text-text-secondary mt-0.5 block">用于多个个人设备间的双向安全同步校验</span>
                 </div>
               </div>
               
               <button
                 type="button"
                 onClick={() => setCloudSync(!cloudSync)}
-                className={`w-9 h-5 rounded-full p-0.5 transition-colors duration-200 outline-none border-none ${
-                  cloudSync ? 'bg-emerald-500' : 'bg-slate-350 dark:bg-zinc-700'
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none cursor-pointer ${
+                  cloudSync ? 'bg-brand-primary' : 'bg-bg-soft'
                 }`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-200 ${
-                  cloudSync ? 'translate-x-4' : 'translate-x-0'
+                <div className={`w-5 h-5 bg-[#FFF9EF] rounded-full shadow-md transition-transform duration-200 ${
+                  cloudSync ? 'translate-x-5' : 'translate-x-0'
                 }`} />
               </button>
             </div>
@@ -324,31 +314,31 @@ export default function MyProfileView({
         </div>
 
         {/* 4. Group 3: Display preference */}
-        <div className="space-y-1.5">
-          <span className="text-[9px] font-black text-[#8E8E93] uppercase tracking-wider pl-4">显示与地图 (Display Panel)</span>
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl divide-y divide-slate-100/60 dark:divide-zinc-800 p-0 shadow-xs">
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wide pl-4">显示偏好</span>
+          <div className="bg-bg-card rounded-[18px] divide-y divide-brand-secondary/8 p-0 border border-brand-secondary/8 shadow-xs">
             
             {/* Theme switcher */}
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-md bg-amber-500 text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
                   {darkMode ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
                 </div>
                 <div>
-                  <span className="text-xs font-bold leading-tight block">深色模式 (Night/Dark Theme)</span>
-                  <span className="text-[9px] text-[#8E8E93] mt-0.5">自适应随系统转换深浅两色毛玻璃视觉风格</span>
+                  <span className="text-sm font-bold leading-normal block">深色模式</span>
+                  <span className="text-xs text-text-secondary mt-0.5 block">自适应随系统转换深浅两色精致视觉外观</span>
                 </div>
               </div>
               
               <button
                 type="button"
                 onClick={() => setDarkMode(!darkMode)}
-                className={`w-9 h-5 rounded-full p-0.5 transition-colors duration-200 outline-none border-none ${
-                  darkMode ? 'bg-emerald-500' : 'bg-slate-350 dark:bg-zinc-700'
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-200 outline-none border-none cursor-pointer ${
+                  darkMode ? 'bg-brand-primary' : 'bg-bg-soft'
                 }`}
               >
-                <div className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-200 ${
-                  darkMode ? 'translate-x-4' : 'translate-x-0'
+                <div className={`w-5 h-5 bg-[#FFF9EF] rounded-full shadow-md transition-transform duration-200 ${
+                  darkMode ? 'translate-x-5' : 'translate-x-0'
                 }`} />
               </button>
             </div>
@@ -357,37 +347,37 @@ export default function MyProfileView({
         </div>
 
         {/* 5. Group 4: Backups importer controls */}
-        <div className="space-y-1.5">
-          <span className="text-[9px] font-black text-[#8E8E93] uppercase tracking-wider pl-4">足印象箱物理备份</span>
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 space-y-4 shadow-xs">
-            <span className="text-[10px] text-[#8E8E93] font-bold block">
-              已存储 {points.length} 篇加密日记。备份不包含外部网络图床开销，导出为自解压 .json 规范格式。
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wide pl-4">足印象箱管理</span>
+          <div className="bg-bg-card rounded-[18px] p-4.5 space-y-4 border border-brand-secondary/8 shadow-xs">
+            <span className="text-[13px] text-text-secondary leading-relaxed block">
+              当前共保全了 {points.length} 篇本地回忆。数据完全存储于浏览器沙盒，不经由外部云端服务器，保障绝对私密安全。
             </span>
 
-            <div className="grid grid-cols-2 gap-3 text-xs font-bold text-center">
+            <div className="grid grid-cols-2 gap-3 text-[13px] font-bold text-center">
               {/* Backups trigger */}
               <button
                 onClick={handleExportJSON}
-                className="p-3 bg-[#007AFF] text-white rounded-xl shadow-xs flex flex-col items-center justify-center gap-1.5 shrink-0 border-none cursor-pointer"
+                className="py-3 px-2 rounded-full flex items-center justify-center gap-1.5 cursor-pointer border-none font-bold transition-all primary-button"
               >
-                <Download className="w-4.5 h-4.5" />
-                <span>备份本地数据</span>
+                <Download className="w-4 h-4" />
+                <span>备份到本地</span>
               </button>
 
               {/* Import Backups trigger */}
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="p-3 bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 rounded-xl flex flex-col items-center justify-center gap-1.5 shrink-0 border-none cursor-pointer"
+                className="py-3 px-2 bg-bg-soft text-text-primary rounded-full flex items-center justify-center gap-1.5 cursor-pointer border-none font-bold hover:scale-[1.01] transition-all"
               >
                 {importStatus === 'success' ? (
                   <>
-                    <Check className="w-4.5 h-4.5 text-emerald-500 animate-pulse" />
-                    <span className="text-emerald-500">导入成功</span>
+                    <Check className="w-4 h-4 text-brand-primary" />
+                    <span className="text-brand-primary">导入成功</span>
                   </>
                 ) : (
                   <>
-                    <Upload className="w-4.5 h-4.5" />
-                    <span>恢复本地备份</span>
+                    <Upload className="w-4 h-4" />
+                    <span>从备份恢复</span>
                   </>
                 )}
               </button>
@@ -401,31 +391,31 @@ export default function MyProfileView({
             </div>
 
             {/* Seeds restoration & Clean all block */}
-            <div className="flex items-center justify-between text-[11px] font-bold pt-2.5 border-t border-slate-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between text-[13px] font-bold pt-3.5 border-t border-brand-secondary/10">
               <button
                 type="button"
                 onClick={() => {
-                  if (window.confirm('重载演示包将向本地再增加 7 篇大理、丽江、昆明、故宫与长城的官方旅行回忆写画。是否继续导入？')) {
+                  if (window.confirm('重载演示包将向本地库重置 6 篇具有自然烟火气的个人回忆，是否继续导入？')) {
                     onRestoreSeeds();
                   }
                 }}
-                className="text-[#007AFF] flex items-center gap-1 border-none bg-transparent cursor-pointer"
+                className="text-brand-primary flex items-center gap-1.5 border-none bg-transparent cursor-pointer font-bold hover:opacity-80"
               >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>重载演示记忆包</span>
+                <RefreshCw className="w-4 h-4 animate-spinSlow" />
+                <span>恢复默认数据</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => {
-                  if (window.confirm('警告：一键清空将永久抹掉所有已上传的心爱图片、日记随写、心情天气打标等核心坐标，请您预先进行「备份本地数据」操作。确定继续一键销毁吗？')) {
+                  if (window.confirm('警告：一键清空将永久抹掉所有已记录的数据。确定继续一键销毁吗？')) {
                     onClearAll();
                   }
                 }}
-                className="text-red-540 hover:text-red-700 flex items-center gap-1 border-none bg-transparent cursor-pointer"
+                className="text-red-500 hover:text-red-650 flex items-center gap-1.5 border-none bg-transparent cursor-pointer font-bold duration-150"
               >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>一键清空日记</span>
+                <Trash2 className="w-4 h-4" />
+                <span>清空所有日记</span>
               </button>
             </div>
 
@@ -433,27 +423,27 @@ export default function MyProfileView({
         </div>
 
         {/* 6. Group 5: About and metadata */}
-        <div className="space-y-1.5">
-          <span className="text-[9px] font-black text-[#8E8E93] uppercase tracking-wider pl-4">关于本产品</span>
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 space-y-3.5 text-xs text-slate-800 dark:text-zinc-300 shadow-xs">
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wide pl-4">关于本产品</span>
+          <div className="bg-bg-card rounded-[18px] p-4.5 space-y-3.5 border border-brand-secondary/8 shadow-xs">
             
-            <div className="flex items-center gap-2">
-              <span className="text-xl">📔</span>
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl animate-shake">📔</span>
               <div>
-                <h4 className="font-extrabold text-[#007AFF]">数字足印地图日记</h4>
-                <p className="text-[10px] text-[#8E8E93] font-medium leading-tight">私密 • 轻量 • 情感化个人回忆本</p>
+                <h4 className="font-bold text-brand-primary">私密回忆日记</h4>
+                <p className="text-xs text-text-muted mt-0.5">私密 • 轻量 • 真实的个人旅行手帐</p>
               </div>
             </div>
 
-            <p className="text-[11px] leading-relaxed text-[#8E8E93] font-light">
-              本网络日记应用完全运行于您的本地，旨在让你的回忆有一个温暖的立足点。所有的故事、看过的风景、拥抱过的晚风与照片，皆妥帖在专属沙盘数据库中生生不息。
+            <p className="text-xs leading-[1.6] text-text-secondary font-light">
+              所有的文字记录、经历过的山川湖海、心动的瞬间与相片，皆安全无虞地锁于您本机的私存保险沙盒中。岁月静静流淌，这一方天地完全独属于您。
             </p>
 
-            <div className="flex items-center justify-between text-[10px] text-[#8E8E93] pt-1.5 border-t border-slate-100 dark:border-zinc-800">
-              <span className="flex items-center gap-0.5 font-bold">
+            <div className="flex items-center justify-between text-xs text-text-muted font-mono pt-3.5 border-t border-brand-secondary/10">
+              <span className="font-semibold">
                 🔒 本地加密保险盒 v1.2.0
               </span>
-              <span>2026 版权所有</span>
+              <span>2026</span>
             </div>
 
           </div>
